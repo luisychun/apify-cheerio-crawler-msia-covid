@@ -4,9 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "sh script.sh && node server.js",
     "dev": "nodemon server.js"
   },
   "author": "Luis yChun",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "apify": "^1.0.1"
+  }
 }
