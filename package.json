@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "sh script.sh && node server.js",
+    "state": "sh script.sh && node state.js",
     "dev": "nodemon server.js"
   },
   "author": "Luis yChun",

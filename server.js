@@ -5,6 +5,7 @@ const sourceUrl = 'http://covid-19.moh.gov.my/'
 // const LATEST = 'LATEST'
 const now = new Date()
 
+// get from MOH
 Apify.main(async () => {
   log.info('Starting actor.')
   // const kvStore = await Apify.openKeyValueStore('COVID-19-MY')
