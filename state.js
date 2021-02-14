@@ -2,6 +2,7 @@ const Apify = require('apify')
 const { log } = Apify.utils
 
 const sourceUrl = 'https://kpkesihatan.com/'
+let postId = ''
 
 // get state data
 Apify.main(async () => {
@@ -28,6 +29,7 @@ Apify.main(async () => {
 
       switch (label) {
         case 'GET_ARTICLE_HREF':
+          postId = $('#main-content').children().first().attr('id')
           const articleHref = $('#main-content')
             .children()
             .first()
@@ -35,7 +37,7 @@ Apify.main(async () => {
             .first()
             .attr('href')
 
-          console.log(`articleHref: ${articleHref}`)
+          // console.log(`articleHref: ${articleHref}`)
           await requestQueue.addRequest({
             // add second request to the queue
             url: `${articleHref}`,
@@ -45,11 +47,12 @@ Apify.main(async () => {
           })
           break
         case 'EXTRACT_DATA':
+          // console.log(postId)
           log.info('Processing and saving data...')
           let dataList = []
           const lastUpdatedAt = $('.entry-date').text()
           const stateTable = $(
-            '#post-17321 > section > figure:nth-child(32) > table > tbody > tr'
+            `#${postId} > section > figure:nth-child(32) > table > tbody > tr`
           )
           const tr = stateTable.each((index, elem) => {
             if (index != 0 && index != stateTable.length - 1) {
