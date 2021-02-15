@@ -16,6 +16,11 @@ Apify's Cheerio crawler for local use. Get the latest updated Covid data from Ma
 - Current in ICU
 - Current require respiratory aid
 
+Include state data get from official DG of health malaysia. Data list included:
+
+- New positive case for each state
+- Overall positive case for each state
+
 ## Running the application:
 
 - npm install (once)
@@ -27,4 +32,4 @@ Apify's Cheerio crawler for local use. Get the latest updated Covid data from Ma
 
 - original source code from: [Apify Covid 19](https://github.com/apify/covid-19/tree/master/malaysia)
 - [Covid-19 Malaysia MOH](http://covid-19.moh.gov.my/)
-- [From the Desk of the Diretor-General of Health Malaysia](https://kpkesihatan.com/)
+- [Desk of the Diretor-General of Health Malaysia](https://kpkesihatan.com/)
