@@ -52,8 +52,9 @@ Apify.main(async () => {
           let dataList = []
           const lastUpdatedAt = $('.entry-date').text()
           const stateTable = $(
-            `#${postId} > section > figure:nth-child(32) > table > tbody > tr`
+            `#${postId} > section > figure:nth-child(33) > table > tbody > tr`
           )
+
           const tr = stateTable.each((index, elem) => {
             if (index != 0 && index != stateTable.length - 1) {
               let stateData = {
