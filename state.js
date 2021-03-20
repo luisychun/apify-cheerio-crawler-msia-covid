@@ -52,11 +52,18 @@ Apify.main(async () => {
           let dataList = []
           const lastUpdatedAt = $('.entry-date').text()
           const stateTable = $(
+            `#${postId} > section > figure:nth-child(32) > table > tbody > tr`
+          )
+
+          const diffStateTable = $(
             `#${postId} > section > figure:nth-child(33) > table > tbody > tr`
           )
 
-          const tr = stateTable.each((index, elem) => {
-            if (index != 0 && index != stateTable.length - 1) {
+          const tableSource =
+            stateTable.length > 0 ? stateTable : diffStateTable
+
+          const tr = tableSource.each((index, elem) => {
+            if (index != 0 && index != tableSource.length - 1) {
               let stateData = {
                 state: $(elem).children().children().text(),
                 newCase: $(elem).children().eq(1).text(),
