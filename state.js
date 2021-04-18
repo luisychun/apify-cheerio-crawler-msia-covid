@@ -51,16 +51,19 @@ Apify.main(async () => {
           log.info('Processing and saving data...')
           let dataList = []
           const lastUpdatedAt = $('.entry-date').text()
-          const stateTable = $(
-            `#${postId} > section > figure:nth-child(32) > table > tbody > tr`
-          )
+          const figureList = [28, 29, 30, 31, 32, 33]
 
-          const diffStateTable = $(
-            `#${postId} > section > figure:nth-child(33) > table > tbody > tr`
-          )
+          let listNum = 0
+          let stateTable = null
 
-          const tableSource =
-            stateTable.length > 0 ? stateTable : diffStateTable
+          do {
+            stateTable = $(
+              `#${postId} > section > figure:nth-child(${figureList[listNum]}) > table > tbody > tr`
+            )
+            ++listNum
+          } while (stateTable.length == 0 && listNum < figureList.length - 1)
+
+          const tableSource = stateTable
 
           const tr = tableSource.each((index, elem) => {
             if (index != 0 && index != tableSource.length - 1) {
