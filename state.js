@@ -30,12 +30,7 @@ Apify.main(async () => {
       switch (label) {
         case 'GET_ARTICLE_HREF':
           postId = $('#main-content').children().first().attr('id')
-          const articleHref = $('#main-content')
-            .children()
-            .first()
-            .children()
-            .first()
-            .attr('href')
+          const articleHref = $("#" + postId).find('section').children().first().find('a').attr('href')
 
           // console.log(`articleHref: ${articleHref}`)
           await requestQueue.addRequest({
@@ -61,7 +56,7 @@ Apify.main(async () => {
               `#${postId} > section > figure:nth-child(${figureList[listNum]}) > table > tbody > tr`
             )
             ++listNum
-          } while (stateTable.length == 0 && listNum < figureList.length - 1)
+          } while (stateTable.length == 0 && listNum <= figureList.length - 1)
 
           const tableSource = stateTable
 
