@@ -32,7 +32,6 @@ Apify.main(async () => {
           postId = $('#main-content').children().first().attr('id')
           const articleHref = $("#" + postId).find('section').children().first().find('a').attr('href')
 
-          // console.log(`articleHref: ${articleHref}`)
           await requestQueue.addRequest({
             // add second request to the queue
             url: `${articleHref}`,
@@ -41,27 +40,37 @@ Apify.main(async () => {
             },
           })
           break
-        case 'EXTRACT_DATA':
-          // console.log(postId)
+        case 'EXTRACT_DATA':          
           log.info('Processing and saving data...')
           let dataList = []
           const lastUpdatedAt = $('.entry-date').text()
-          const figureList = [28, 29, 30, 31, 32, 33]
+          const figureList = [21, 22, 23]
 
           let listNum = 0
           let stateTable = null
+          let stateTitle = null          
 
           do {
             stateTable = $(
               `#${postId} > section > figure:nth-child(${figureList[listNum]}) > table > tbody > tr`
             )
+            
+            stateTitle = $(
+              `#${postId} > section > figure:nth-child(${figureList[listNum]}) > table > tbody > tr:nth-child(1) > td:nth-child(2) > strong`
+            )
+          
             ++listNum
-          } while (stateTable.length == 0 && listNum <= figureList.length - 1)
+          } while (!stateTitle.text().includes("BILANGAN KES BAHARU") && listNum <= figureList.length - 1)
 
           const tableSource = stateTable
 
+          if(tableSource.length === 0) {
+            console.log(`Table doesn't exist`);
+            break
+          }
+
           const tr = tableSource.each((index, elem) => {
-            if (index != 0 && index != tableSource.length - 1) {
+            if (tableFound && index != 0 && index != tableSource.length - 1) {
               let stateData = {
                 state: $(elem).children().children().text(),
                 newCase: $(elem).children().eq(1).text(),
@@ -70,6 +79,7 @@ Apify.main(async () => {
               dataList.push(stateData)
             }
           })
+
           console.log(dataList)
           console.log(`() for import case`)
           console.log(`Last updated at: ${lastUpdatedAt}`)
