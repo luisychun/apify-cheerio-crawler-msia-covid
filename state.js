@@ -44,11 +44,11 @@ Apify.main(async () => {
           log.info('Processing and saving data...')
           let dataList = []
           const lastUpdatedAt = $('.entry-date').text()
-          const figureList = [21, 22, 23]
+          const figureList = [21, 22, 23, 31, 32, 33]
 
           let listNum = 0
           let stateTable = null
-          let stateTitle = null          
+          let stateTitle = null
 
           do {
             stateTable = $(
@@ -70,7 +70,7 @@ Apify.main(async () => {
           }
 
           const tr = tableSource.each((index, elem) => {
-            if (tableFound && index != 0 && index != tableSource.length - 1) {
+            if (index != 0 && index != tableSource.length - 1) {
               let stateData = {
                 state: $(elem).children().children().text(),
                 newCase: $(elem).children().eq(1).text(),
