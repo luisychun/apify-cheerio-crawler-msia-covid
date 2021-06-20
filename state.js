@@ -44,27 +44,20 @@ Apify.main(async () => {
           log.info('Processing and saving data...')
           let dataList = []
           const lastUpdatedAt = $('.entry-date').text()
-          const figureList = [21, 22, 23, 31, 32, 33]
 
-          let listNum = 0
-          let stateTable = null
           let stateTitle = null
+          let tableSource = null
 
-          do {
-            stateTable = $(
-              `#${postId} > section > figure:nth-child(${figureList[listNum]}) > table > tbody > tr`
-            )
-            
-            stateTitle = $(
-              `#${postId} > section > figure:nth-child(${figureList[listNum]}) > table > tbody > tr:nth-child(1) > td:nth-child(2) > strong`
-            )
-          
-            ++listNum
-          } while (!stateTitle.text().includes("BILANGAN KES BAHARU") && listNum <= figureList.length - 1)
+          let wpFigure = $('.wp-block-table')
 
-          const tableSource = stateTable
+          const figureTable = wpFigure.each((index, figure) => {
+            stateTitle = $(figure).children('table').find('tbody').children('tr').first().children('td').eq(1).children('strong').first()
+            if (stateTitle.text().includes("BILANGAN KES BAHARU")) {
+              tableSource = $(figure).children('table').find('tbody').children('tr')
+            }
+          })
 
-          if(tableSource.length === 0) {
+          if(tableSource === null || tableSource.length === 0) {
             console.log(`Table doesn't exist`);
             break
           }
