@@ -1,76 +1,76 @@
-const Apify = require('apify')
-const { log } = Apify.utils
+const Apify = require("apify");
+const { log } = Apify.utils;
 
-const sourceUrl = 'http://covid-19.moh.gov.my/'
+const sourceUrl = "http://covid-19.moh.gov.my/";
 // const LATEST = 'LATEST'
-const now = new Date()
+const now = new Date();
 
 // get from MOH
 Apify.main(async () => {
-  log.info('Starting actor.')
+  log.info("Starting actor.");
   // const kvStore = await Apify.openKeyValueStore('COVID-19-MY')
   // const dataset = await Apify.openDataset('COVID-19-MY-HISTORY')
-  const requestQueue = await Apify.openRequestQueue()
+  const requestQueue = await Apify.openRequestQueue();
 
   await requestQueue.addRequest({
     url: sourceUrl,
     userData: {
-      label: 'GET_IFRAME',
+      label: "GET_IFRAME",
     },
-  })
+  });
 
   const cheerioCrawler = new Apify.CheerioCrawler({
     requestQueue,
     maxRequestRetries: 5,
     requestTimeoutSecs: 60,
     handlePageFunction: async ({ request, body, $ }) => {
-      const { label } = request.userData
-      log.info('Page opened.', {
+      const { label } = request.userData;
+      log.info("Page opened.", {
         label, // get iframe from MOH website
         url: request.url,
-      })
+      });
 
       switch (label) {
-        case 'GET_IFRAME':
-          const iframUrl = $('#g-features script')
-            .attr('id')
-            .match(/(?<=_)[^_]+$/g)[0]
+        case "GET_IFRAME":
+          const iframUrl = $("#g-features script")
+            .attr("id")
+            .match(/(?<=_)[^_]+$/g)[0];
           await requestQueue.addRequest({
             // add second request to the queue
             url: `https://e.infogram.com/${iframUrl}`,
             userData: {
-              label: 'EXTRACT_DATA',
+              label: "EXTRACT_DATA",
             },
-          })
-          break
-        case 'EXTRACT_DATA':
-          log.info('Processing and saving data...')
+          });
+          break;
+        case "EXTRACT_DATA":
+          log.info("Processing and saving data...");
           // Get overall data
-          const values = body.match(/(?<="text":")(\+|\d|,)+(?=")/g)
+          const values = body.match(/(?<="text":")(\+|\d|,)+(?=")/g);
 
           // Get new positive cases
           let newPositiveCase = body.match(
             /(?<="Kes\sBaharu:\s)(\+|\d|,)+(?=")/g
-          )
+          );
           newPositiveCase = newPositiveCase[0].substr(
             1,
             newPositiveCase[0].length
-          )
+          );
 
           // Get new positive local/import case
           const localImptCase = body.match(
             /(?<="Kes\sTempatan:\s|"Kes\sImport:\s)(\d|,)+(?=")/g
-          )
+          );
 
           // Get new positive resident state
           const residentState = body.match(
             /(?<="-Warganegara:\s|"-Bukan\sWarganegara:\s)(\d|,)+(?=")/g
-          )
+          );
 
           // Get latest updated date
           const srcDate = new Date(
             body.match(/(?<=updatedAt":")[^"]+(?=")/g)[0]
-          )
+          );
 
           const data = {
             newPositiveCase: toNumber(newPositiveCase),
@@ -86,7 +86,7 @@ Apify.main(async () => {
             activeCases: toNumber(values[2]),
             inICU: toNumber(values[7]),
             respiratoryAid: toNumber(values[8]),
-            country: 'Malaysia',
+            country: "Malaysia",
             sourceUrl,
             lastUpdatedAt: new Date(
               Date.UTC(
@@ -106,8 +106,8 @@ Apify.main(async () => {
                 srcDate.getMinutes()
               )
             ).toISOString(),
-          }
-          console.log(data)
+          };
+          console.log(data);
 
           // Push the data
           // let latest = await kvStore.getValue(LATEST)
@@ -129,21 +129,21 @@ Apify.main(async () => {
           // await Apify.pushData(data)
           // log.info('Data saved.')
 
-          break
+          break;
         default:
-          break
+          break;
       }
     },
     handleFailedRequestFunction: async ({ request }) => {
-      console.log(`Request ${request.url} failed many times.`)
-      console.dir(request)
+      console.log(`Request ${request.url} failed many times.`);
+      console.dir(request);
     },
-  })
+  });
 
   // Run the crawler and wait for it to finish.
-  log.info('Starting the crawl.')
-  await cheerioCrawler.run()
-  log.info('Actor finished.')
-})
+  log.info("Starting the crawl.");
+  await cheerioCrawler.run();
+  log.info("Actor finished.");
+});
 
-const toNumber = (txt) => parseInt(txt.replace(/\D/g, '', 10))
+const toNumber = (txt) => parseInt(txt.replace(/\D/g, "", 10));

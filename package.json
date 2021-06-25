@@ -11,6 +11,9 @@
   "author": "Luis yChun",
   "license": "MIT",
   "dependencies": {
-    "apify": "^1.0.1"
+    "apify": "^1.0.1",
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.3",
+    "prettier": "^2.3.1"
   }
 }
