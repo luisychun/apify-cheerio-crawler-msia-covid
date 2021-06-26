@@ -57,9 +57,8 @@ const getData = async () => {
     }
   });
 
-  console.log(dataList);
-  console.log(`() for import case`);
-  console.log(`Last updated at: ${lastUpdatedAt}`);
+  dataList.push(lastUpdatedAt);
+  return dataList;
 };
 
-getData();
+module.exports = getData;

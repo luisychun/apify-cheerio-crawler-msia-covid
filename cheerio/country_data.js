@@ -73,7 +73,7 @@ const getData = async () => {
       )
     ).toISOString(),
   };
-  console.log(data);
+  return data;
 };
 
-getData();
+module.exports = getData;
