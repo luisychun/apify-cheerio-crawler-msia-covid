@@ -4,9 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "sh script.sh && node server.js",
-    "state": "sh script.sh && node state.js",
-    "dev": "nodemon server.js"
+    "apify-start": "sh apify/script.sh && node apify/server.js",
+    "apify-state": "sh apify/script.sh && node apify/state.js",
+    "country": "node cheerio/country_data.js",
+    "state": "node cheerio/state_data.js",
+    "start": "node app",
+    "dev": "nodemon app"
   },
   "author": "Luis yChun",
   "license": "MIT",
@@ -14,6 +17,9 @@
     "apify": "^1.0.1",
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.3",
+    "config": "^3.3.6",
+    "knex": "^0.95.6",
+    "pg": "^8.6.0",
     "prettier": "^2.3.1"
   }
 }
