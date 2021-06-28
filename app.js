@@ -1,7 +1,12 @@
-const knex = require("./config/db");
-const sgSendMail = require("./middleware/mailService");
+const dotenv = require("dotenv");
+
+// load env
+dotenv.config({ path: "./config/config.env" });
+
+const sgSendMail = require("./utils/mailService");
 const getCountryData = require("./cheerio/country_data");
 const getStateData = require("./cheerio/state_data");
+const knex = require("./config/db");
 
 // DB
 knex

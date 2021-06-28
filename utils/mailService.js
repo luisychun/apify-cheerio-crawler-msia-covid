@@ -1,12 +1,11 @@
 const sgMail = require("@sendgrid/mail");
-const config = require("config");
 
-sgMail.setApiKey(config.get("sendGridAPI"));
+sgMail.setApiKey(process.env.SGAPI);
 
 const sgSendMail = async () => {
   const msg = {
-    to: config.get("emailReceiver"),
-    from: config.get("emailSender"),
+    to: process.env.SGSENDER,
+    from: process.env.SGRECEIVER,
     subject: "Covid Scraper Issue",
     html: `Something went wrong. Please check.`,
   };

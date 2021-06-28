@@ -1,3 +1,4 @@
 node_modules
 apify_storage
-config
+config/config.env
+config/ddl.sql
