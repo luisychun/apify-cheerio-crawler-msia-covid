@@ -1,7 +1,5 @@
-const dotenv = require("dotenv");
-
 // load env
-dotenv.config({ path: "./config/config.env" });
+require("dotenv").config();
 
 const sgSendMail = require("./utils/mailService");
 const getCountryData = require("./cheerio/country_data");
