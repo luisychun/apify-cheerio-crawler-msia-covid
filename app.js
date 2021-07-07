@@ -1,5 +1,5 @@
 // load env
-// require("dotenv").config();
+require("dotenv").config();
 
 const sgSendMail = require("./utils/mailService");
 const getCountryData = require("./cheerio/country_data");
