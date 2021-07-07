@@ -4,10 +4,6 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "apify-start": "sh apify/script.sh && node apify/server.js",
-    "apify-state": "sh apify/script.sh && node apify/state.js",
-    "country": "node cheerio/country_data.js",
-    "state": "node cheerio/state_data.js",
     "start": "node app",
     "dev": "nodemon app"
   },

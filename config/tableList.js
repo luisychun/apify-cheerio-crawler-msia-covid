@@ -1,4 +1,4 @@
 module.exports = {
-  countryDate = 'country_data',
-  stateDate = 'state_data'
-}
+  countryTable: "country_data",
+  stateTable: "state_data",
+};

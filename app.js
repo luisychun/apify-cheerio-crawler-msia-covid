@@ -5,7 +5,7 @@ const sgSendMail = require("./utils/mailService");
 const getCountryData = require("./cheerio/country_data");
 const getStateData = require("./cheerio/state_data");
 const knex = require("./config/db");
-const { countryDate, stateDate } = require("./config/tableList");
+const { countryTable, stateTable } = require("./config/tableList");
 
 // DB
 knex
@@ -21,11 +21,12 @@ knex
 const fetchData = async () => {
   try {
     const countryData = await getCountryData();
+
     await knex
       .insert({
         data: JSON.stringify(countryData),
       })
-      .into(countryDate);
+      .into(countryTable);
 
     console.log("Country data inserted");
 
@@ -36,7 +37,7 @@ const fetchData = async () => {
         .insert({
           data: JSON.stringify(stateData),
         })
-        .into(stateDate);
+        .into(stateTable);
 
       console.log("State data inserted");
     }
