@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const sgSendMail = require("./utils/mailService");
 const getCountryData = require("./cheerio/country_data");
+const getPostId = require("./cheerio/get_state_post");
 const getStateData = require("./cheerio/state_data");
 const knex = require("./config/db");
 const { countryTable, stateTable } = require("./config/tableList");
@@ -30,9 +31,11 @@ const fetchData = async () => {
 
     console.log("Country data inserted");
 
-    const stateData = await getStateData();
+    const postIdList = await getPostId();
 
-    if (stateData.length > 1) {
+    const stateData = await getStateData(postIdList);
+
+    if (stateData !== undefined && stateData.length > 1) {
       await knex
         .insert({
           data: JSON.stringify(stateData),
