@@ -19,7 +19,7 @@ knex
     process.exit(1);
   });
 
-const fetchData = async () => {
+(async () => {
   try {
     const countryData = await getCountryData();
 
@@ -51,6 +51,4 @@ const fetchData = async () => {
     console.error(err.message);
     process.exit(1);
   }
-};
-
-fetchData();
+})();
