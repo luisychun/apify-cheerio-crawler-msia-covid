@@ -5,13 +5,13 @@ const getStateData = require("./cheerio/state_data");
 (async () => {
   try {
     const countryData = await getCountryData();
-    console.log("Country data: ");
+    console.log("MOH data success: ");
     console.log(countryData);
 
     const postIdList = await getPostId();
     const stateData = await getStateData(postIdList);
 
-    console.log("State data: ");
+    console.log("DG Health data success: ");
     console.log(stateData);
     process.exit(0);
   } catch (err) {

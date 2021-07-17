@@ -30,7 +30,7 @@ knex
       })
       .into(countryTable);
 
-    console.log("Country data inserted");
+    console.log("MOH data success");
 
     const postIdList = await getPostId();
 
@@ -43,11 +43,16 @@ knex
         })
         .into(stateTable);
 
-      console.log("State data inserted");
+      console.log("DG Health data success");
     }
 
-    await sgSendMail("Covid Scraper Success", "Data inserted into DB");
-    process.exit(0);
+    if (countryData && stateData.length > 1) {
+      await sgSendMail("Covid Scraper Success", "Data inserted into DB");
+    } else {
+      await sgSendMail("Covid Scraper Failed", "Scraper failed");
+    }
+
+    process.exit(0); // exit with success
   } catch (err) {
     await sgSendMail("Covid Scraper Failed", "Scraper failed");
     console.error(err.message);
