@@ -2,12 +2,12 @@ const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SGAPI);
 
-const sgSendMail = async () => {
+const sgSendMail = async (subject, html) => {
   const msg = {
     to: process.env.SGSENDER,
     from: process.env.SGRECEIVER,
-    subject: "Covid Scraper Issue",
-    html: `Something went wrong. Please check.`,
+    subject,
+    html,
   };
 
   try {

@@ -14,7 +14,8 @@ knex
   .then(() => {
     console.log("DB connected");
   })
-  .catch((err) => {
+  .catch(async (err) => {
+    await sgSendMail("Covid Scraper Failed", "DB connection failed");
     console.log(err);
     process.exit(1);
   });
@@ -45,9 +46,10 @@ knex
       console.log("State data inserted");
     }
 
+    await sgSendMail("Covid Scraper Success", "Data inserted into DB");
     process.exit(0);
   } catch (err) {
-    await sgSendMail();
+    await sgSendMail("Covid Scraper Failed", "Scraper failed");
     console.error(err.message);
     process.exit(1);
   }
