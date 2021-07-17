@@ -1,6 +1,6 @@
 ## Project Info:
 
-Apify's Cheerio crawler for local use. Get the latest updated Covid data from Malaysia's official MOH website. Data list included:
+Cheerio scraper to get latest number of Covid cases from Malaysia's official MOH website. Data list included:
 
 - New positive case
 - New local case
@@ -16,7 +16,7 @@ Apify's Cheerio crawler for local use. Get the latest updated Covid data from Ma
 - Current in ICU
 - Current require respiratory aid
 
-Include state data get from official DG of health malaysia. Data list included:
+Included state data from official DG of Health Malaysia. Data list included:
 
 - New positive case for each state
 - Overall positive case for each state
@@ -24,12 +24,9 @@ Include state data get from official DG of health malaysia. Data list included:
 ## Running the application:
 
 - npm install (once)
-- npm start (get overall data)
-- npm run state (get state data)
-- modify the script.sh shell script if you are using Windows
+- npm run scraper (log the result in console)
 
 ## References:
 
-- original source code from: [Apify Covid 19](https://github.com/apify/covid-19/tree/master/malaysia)
 - [Covid-19 Malaysia MOH](http://covid-19.moh.gov.my/)
 - [Desk of the Diretor-General of Health Malaysia](https://kpkesihatan.com/)

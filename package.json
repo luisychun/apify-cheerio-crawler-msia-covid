@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node app",
-    "dev": "nodemon app"
+    "dev": "nodemon app",
+    "scraper": "node scraper"
   },
   "author": "Luis yChun",
   "license": "MIT",
@@ -15,7 +16,9 @@
     "cheerio": "^1.0.0-rc.3",
     "dotenv": "^10.0.0",
     "knex": "^0.95.6",
-    "pg": "^8.6.0",
-    "prettier": "^2.3.1"
+    "pg": "^8.6.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2"
   }
 }
