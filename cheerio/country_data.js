@@ -9,11 +9,11 @@ const toNumber = (txt) => parseInt(txt.replace(/\D/g, "", 10));
 const getData = async () => {
   const res = await axios.get(sourceUrl);
   const $ = cheerio.load(res.data);
-  const iframUrl = $("#g-features script")
+  const iframeUrl = $("#g-features script")
     .attr("id")
     .match(/(?<=_)[^_]+$/g)[0];
 
-  const response = await axios.get(`https://e.infogram.com/${iframUrl}`);
+  const response = await axios.get(`https://e.infogram.com/${iframeUrl}`);
 
   const values = response.data.match(/(?<="text":")(\+|\d|,)+(?=")/g);
 
@@ -21,7 +21,10 @@ const getData = async () => {
   let newPositiveCase = response.data.match(
     /(?<="Kes\sBaharu:\s)(\+|\d|,)+(?=")/g
   );
-  newPositiveCase = newPositiveCase[0].substr(1, newPositiveCase[0].length);
+  newPositiveCase =
+    newPositiveCase !== null
+      ? newPositiveCase[0].substr(1, newPositiveCase[0].length)
+      : "TBU";
 
   // Get new positive local/import case
   const localImptCase = response.data.match(
@@ -34,24 +37,28 @@ const getData = async () => {
   );
 
   // Get latest updated date
-  const srcDate = new Date(
-    response.data.match(/(?<=updatedAt":")[^"]+(?=")/g)[0]
-  );
+  const srcDate =
+    response.data !== null
+      ? new Date(response.data.match(/(?<=updatedAt":")[^"]+(?=")/g)[0])
+      : "TBU";
 
   const data = {
     newPositiveCase: toNumber(newPositiveCase),
-    newLocalCase: toNumber(localImptCase[1]),
-    newImportCase: toNumber(localImptCase[0]),
-    newLocalState: toNumber(residentState[0]),
-    newForeignerState: toNumber(residentState[1]),
-    newRecoveredCase: toNumber(values[4].substr(1, values[4].length)),
-    newDeathCase: toNumber(values[1].substr(1, values[1].length)),
-    overallTestedPositive: toNumber(values[0]),
-    overallRecovered: toNumber(values[5]),
-    overallDeath: toNumber(values[3]),
-    activeCases: toNumber(values[2]),
-    inICU: toNumber(values[7]),
-    respiratoryAid: toNumber(values[8]),
+    newLocalCase: localImptCase !== null ? toNumber(localImptCase[1]) : "TBU",
+    newImportCase: localImptCase !== null ? toNumber(localImptCase[0]) : "TBU",
+    newLocalState: residentState !== null ? toNumber(residentState[0]) : "TBU",
+    newForeignerState:
+      residentState !== null ? toNumber(residentState[1]) : "TBU",
+    newRecoveredCase:
+      values !== null ? toNumber(values[4].substr(1, values[4].length)) : "TBU",
+    newDeathCase:
+      values !== null ? toNumber(values[1].substr(1, values[1].length)) : "TBU",
+    overallTestedPositive: values !== null ? toNumber(values[0]) : "TBU",
+    overallRecovered: values !== null ? toNumber(values[5]) : "TBU",
+    overallDeath: values !== null ? toNumber(values[3]) : "TBU",
+    activeCases: values !== null ? toNumber(values[2]) : "TBU",
+    inICU: values !== null ? toNumber(values[7]) : "TBU",
+    respiratoryAid: values !== null ? toNumber(values[8]) : "TBU",
     country: "Malaysia",
     sourceUrl,
     lastUpdatedAt: new Date(
@@ -63,15 +70,18 @@ const getData = async () => {
         now.getMinutes()
       )
     ).toISOString(),
-    lastUpdatedAtSource: new Date(
-      Date.UTC(
-        srcDate.getFullYear(),
-        srcDate.getMonth(),
-        srcDate.getDate(),
-        srcDate.getHours() - 8,
-        srcDate.getMinutes()
-      )
-    ).toISOString(),
+    lastUpdatedAtSource:
+      srcDate !== "TBU"
+        ? new Date(
+            Date.UTC(
+              srcDate.getFullYear(),
+              srcDate.getMonth(),
+              srcDate.getDate(),
+              srcDate.getHours() - 8,
+              srcDate.getMinutes()
+            )
+          ).toISOString()
+        : "TBU",
   };
   return data;
 };
